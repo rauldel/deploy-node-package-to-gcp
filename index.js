@@ -5,6 +5,19 @@ const path = require('path');
 const { exec } = require('child_process');
 const executeChild = util.promisify(exec);
 
+async function loginGoogleCloud() {
+  try {
+    console.log('Logging in GCP...');
+    const { stdout, stderr } = await executeChild(
+      `gcloud auth application-default login`
+    );
+    console.log(`Login result: ${JSON.stringify(stdout, null, 2)}`);
+  } catch (err) {
+    console.error(`Failed to login in GCP: ${JSON.stringify(err)}.`);
+    throw new Error('Fail to login in GCP. Please seek for assistance.');
+  }
+}
+
 async function getCrendentials() {
   try {
     console.log(`Retrieving credentials from gcloud...`);
@@ -35,6 +48,7 @@ async function run() {
     const payload = JSON.stringify(github.context.payload, undefined, 2);
     console.log(`The event payload: ${payload}`);
 
+    await loginGoogleCloud();
     const creds = await getCrendentials();
     console.log(`The credentials ${creds}`);
   } catch (error) {
