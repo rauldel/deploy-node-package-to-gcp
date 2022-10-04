@@ -1,0 +1,17 @@
+name: 'PP-Deploy'
+description: 'Deploy a new version of a Pangolin Package'
+inputs:
+  who-to-greet:
+    description: 'name of the person to greet'
+    required: false
+    default: 'World'
+  milliseconds:  # id of input
+    description: 'number of milliseconds to wait'
+    required: true
+    default: '1000'
+outputs:
+  time: # output will be available to future steps
+    description: 'The current time after waiting'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
