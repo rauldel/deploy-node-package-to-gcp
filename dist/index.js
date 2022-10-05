@@ -9595,6 +9595,14 @@ module.exports = require("path");
 
 /***/ }),
 
+/***/ 7282:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("process");
+
+/***/ }),
+
 /***/ 5477:
 /***/ ((module) => {
 
@@ -9697,6 +9705,7 @@ const github = __nccwpck_require__(1468);
 const util = __nccwpck_require__(3837);
 const path = __nccwpck_require__(1017);
 const { exec } = __nccwpck_require__(2081);
+const { env } = __nccwpck_require__(7282);
 const executeChild = util.promisify(exec);
 
 async function checkLoginStatus() {
@@ -9704,10 +9713,11 @@ async function checkLoginStatus() {
     const { stdout, stderr } = await executeChild(`gcloud auth list`);
     console.log(`RES: ${JSON.stringify(stdout, null, 2)}`);
 
+    console.log(`The PATH: ${JSON.stringify(env)}`);
     const { stdout2, stderr2 } = await executeChild(
-      `gcloud auth activate-service-account`
+      `gcloud auth activate-service-account --key-file=${env.GOOGLE_APPLICATION_CREDENTIALS}`
     );
-    console.log(`RES: ${JSON.stringify(stdout2, null, 2)}`);
+    console.log(`RES 2: ${JSON.stringify(stdout2, null, 2)}`);
   } catch (err) {
     console.error(`Failed to check gcloud auth: ${JSON.stringify(err)}.`);
     throw new Error('Fail to check gcloud auth');
